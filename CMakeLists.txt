@@ -3,4 +3,4 @@ project(PokerCalc)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(PokerCalc main.cpp Deck.cpp Deck.h)
+add_executable(PokerCalc main.cpp Deck.cpp Deck.h Card.cpp Card.h)
