@@ -7,12 +7,12 @@
 #include <ostream>
 
 class Card {
-private:
-    std::string _str = ""; //строка для ввода и вывода значения карты
-    uint_fast8_t _value_of_card = 0;
-    uint_fast8_t _suit_of_card = 0;
 
 public:
+    std::string str = ""; //строка для ввода и вывода значения карты
+    uint_fast8_t value_of_card = 0;
+    uint_fast8_t suit_of_card = 0;
+
     Card(char const* c);
 
     Card(std::string s);
@@ -24,6 +24,8 @@ public:
     bool operator>(const Card &c);
 
     bool operator<(const Card &c);
+
+    void _setter(std::string);
 
     friend std::ostream& operator<<(std::ostream &os, const Card &crd);
 
