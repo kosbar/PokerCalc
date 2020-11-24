@@ -59,7 +59,9 @@ void straight_multiplies(std::vector<uint64_t> &straights, std::vector<Card> &de
 }
 
 //Выбираем те OESD в которых есть наши сданные карты:
-void only_hand_oesd(std::vector<uint64_t> &oesd, std::vector<Card> &hand, std::vector<uint64_t> &oesd_minus) {
+void only_hand_oesd(std::vector<uint64_t> &oesd,
+                    std::vector<Card> &hand,
+                    std::vector<uint64_t> &oesd_minus) {
     for (auto &num : oesd) {
         if (!(num % hand[0].value_of_card) | !(num % hand[1].value_of_card)) {
             oesd_minus.push_back(num);
@@ -68,7 +70,8 @@ void only_hand_oesd(std::vector<uint64_t> &oesd, std::vector<Card> &hand, std::v
 }
 
 //Выбираем те стриты, в которых участвуют наши карты:
-void only_hand_straights(std::vector<uint64_t> &strights, std::vector<Card> &hand,
+void only_hand_straights(std::vector<uint64_t> &strights,
+                         std::vector<Card> &hand,
                          std::vector<uint64_t> &strights_minus) {
     for (auto &num : strights) {
         if (!(num % hand[0].value_of_card) | !(num % hand[1].value_of_card)) {
@@ -76,7 +79,6 @@ void only_hand_straights(std::vector<uint64_t> &strights, std::vector<Card> &han
         }
     }
 }
-
 
 //комбинации карт как произведения простых чисел (основная теорема арифметики):
 long multiply_value_of_cardue(std::vector<Card> &slice) {
@@ -99,30 +101,36 @@ long multiply_suits(std::vector<Card> &slice) {
 }
 
 int main() {
-    std::vector<Card> deck52 = {"2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
-                                "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
-                                "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
-                                "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac"};
+    std::vector<Card> deck52 = {
+            "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
+            "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
+            "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
+            "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac"
+    };
 
-    std::vector<Card> deck36 = {"6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
-                                "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
-                                "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
-                                "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac",
+    std::vector<Card> deck36 = {
+            "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
+            "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
+            "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
+            "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac",
     };
 
     std::vector<Card> hand = {"Td", "Jc"};
 
-
-    std::vector<uint64_t> oesd;    /// вектор со всеми возможными OESD в колоде.
+    /// вектор со всеми возможными OESD в колоде.
+    std::vector<uint64_t> oesd;
     oesd_multiplies(oesd, deck52); /// заполнили его
 
-    std::vector<uint64_t> oesd_with_hand; ///отфилтровали OESD, оставив т е, в которых есть сданные на руки карты
+    /// отфилтровали OESD, оставив т.е., в которых есть сданные на руки карты
+    std::vector<uint64_t> oesd_with_hand;
     only_hand_oesd(oesd, hand, oesd_with_hand);
 
-    std::vector<uint64_t> strights; /// вектор со всеми возможными стритами в колоде.
+    /// вектор со всеми возможными стритами в колоде.
+    std::vector<uint64_t> strights;
     straight_multiplies(strights, deck52);
 
-    std::vector<uint64_t> strights_with_hand; ///отфилтровали стриты, оставив те, в которых есть сданные на руки карты
+    /// отфилтровали стриты, оставив те, в которых есть сданные на руки карты
+    std::vector<uint64_t> strights_with_hand;
     only_hand_straights(strights, hand, strights_with_hand);
 
     std::vector<Card> flop; ///вектор с первыми тремя картами стола.
@@ -130,7 +138,11 @@ int main() {
     deck_minus_hand(deck52, hand); ///раздали карты.
 
     ///генерация флопа:
-    std::sample(deck52.begin(), deck52.end(), std::back_inserter(flop), 3, std::mt19937{std::random_device{}()});
+    std::sample(deck52.begin(),
+                deck52.end(),
+                std::back_inserter(flop),
+                3,
+                std::mt19937{std::random_device{ }() } );
     pr(flop);
 
     pr(deck52);
