@@ -81,7 +81,7 @@ void only_hand_straights(std::vector<uint64_t> &strights,
 }
 
 //комбинации карт как произведения простых чисел (основная теорема арифметики):
-long multiply_value_of_cardue(std::vector<Card> &slice) {
+long multiply_value_of_cards(std::vector<Card> &slice) {
     uint64_t value_of_cardue = 1;
 
     for (auto &i : slice) { value_of_cardue *= i.value_of_card; }
@@ -100,6 +100,16 @@ long multiply_suits(std::vector<Card> &slice) {
     return suits;
 }
 
+void generateSlice(std::vector<Card>& deck, std::vector<Card>& desk, int size) {
+    desk.clear();
+
+    std::sample(deck.begin(),
+                deck.end(),
+                std::back_inserter(desk),
+                size,
+                std::mt19937{std::random_device{}()});
+}
+
 int main() {
     std::vector<Card> deck52 = {
             "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
@@ -108,18 +118,11 @@ int main() {
             "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac"
     };
 
-    std::vector<Card> deck36 = {
-            "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
-            "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
-            "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
-            "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac",
-    };
-
     std::vector<Card> hand = {"Td", "Jc"};
 
     /// вектор со всеми возможными OESD в колоде.
     std::vector<uint64_t> oesd;
-    oesd_multiplies(oesd, deck52); /// заполнили его
+    oesd_multiplies(oesd, deck52); /// заполнилcи его
 
     /// отфилтровали OESD, оставив т.е., в которых есть сданные на руки карты
     std::vector<uint64_t> oesd_with_hand;
@@ -137,15 +140,44 @@ int main() {
 
     deck_minus_hand(deck52, hand); ///раздали карты.
 
-    ///генерация флопа:
-    std::sample(deck52.begin(),
-                deck52.end(),
-                std::back_inserter(flop),
-                3,
-                std::mt19937{std::random_device{ }() } );
-    pr(flop);
+    int two_pair = 0;
+    int one_pair = 0;
+    int oesd_hand = 0;
+    int iteration = 10000;
 
-    pr(deck52);
+    for(int i = 0; i < iteration; ++i) {
+        generateSlice(deck52, flop, 3);
+
+        long mult_flop = multiply_value_of_cards(flop);
+
+        if (!(mult_flop % (hand[0].value_of_card * hand[1].value_of_card))) {
+
+            ++two_pair;
+
+        } else if (!(mult_flop % hand[0].value_of_card) || !(mult_flop % hand[1].value_of_card)) {
+         //  std::cout << "----------------------------------------" << std::endl;
+            //  std::cout << "mult_flop: " << mult_flop << std::endl;
+            // std::cout << "multiply_hands: " << hand[0].value_of_card * hand[1].value_of_card << std::endl;
+            // std::cout << "division: " << mult_flop % (hand[0].value_of_card * hand[1].value_of_card) << std::endl;
+            // std::cout << "condition: " <<  !mult_flop % (hand[0].value_of_card * hand[1].value_of_card) << std::endl;
+
+           ++one_pair;
+
+        } else {
+            for (auto c : oesd_with_hand) {
+                if (!(mult_flop % c)) {
+
+                    std::cout << "AAAAAAA ТУТ?" << std::endl;
+                    ++oesd_hand;
+                    break;
+                }
+            }
+        }
+    }
+
+    std::cout << "Количество пар: " << 100*(float)one_pair/(float)iteration << "%" << std::endl;
+    std::cout << "Количество двух пар: " << 100*(float)two_pair/(float)iteration << "%" << std::endl;
+    std::cout << "Количество OESD: " << 100*(float)oesd_hand/(float)iteration << "%" << std::endl;
 
     return 0;
 }
