@@ -1,70 +1,83 @@
-//
 // Created by kosbar on 21.11.2019.
-//
 
 #include <iostream>
 #include "Deck.h"
 
-struct Deck::card {
-
-    uint_fast8_t value_of_card;
-    uint_fast8_t suit_of_card;
-
-    //для удобства вывода на печать дополнительные чары тут
-    const char *val;
-    const char *sui;
-
-    bool operator==(const card &c) {
-        return (c.suit_of_card == suit_of_card) && (c.value_of_card == value_of_card);
-    }
-
-    bool operator>(const card &c) {
-        return (c.suit_of_card == suit_of_card) && (c.value_of_card == value_of_card);
-    }
-
-    std::ostream &operator<<(std::ostream &os, const card &crd) {
-        os << crd.val << crd.sui;
-        return os;
-    }
-};
-
-//Necessary give number of cards in deck (52, 36 ...)
-Deck::Deck(int num) : numberOfCards(num) {};
+Deck::Deck() : cards {"2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
+                      "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
+                      "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
+                      "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac"}
+{};
 
 void Deck::pr() {
-    std::cout << "Deck size: " << deck.size() << std::endl;
-    std::cout << "Deck: " << '\n';
+    std::cout << "cards.size(): " << cards.size() << std::endl;
+    std::cout << "cards.capacity(): " << cards.capacity() << std::endl;
+    std::cout << "vector: " << '\n';
 
-    for (int i = 0; i < deck.size(); ++i) {
-
+    for (int i = 0; i < cards.size(); ++i) {
         //для разграничения колоды по мастям:
-        if (i != 0 && deck[i].suit_of_card != deck[i - 1].suit_of_card) { std::cout << std::endl; }
-        std::cout << " " << deck[i] << ' ';
+        if (i != 0 && cards[i].suit_of_card != cards[i - 1].suit_of_card) {
+            std::cout << std::endl; } std::cout << " " << cards[i] << ' ';
     }
-
     std::cout << '\n';
 };
 
-//Get our hand from deck
-void Deck::deck_minus_hand(std::array<card, N>  ) {
+//Multiply of cards of all OESD in cards, each multiply is unique (Fundamental theorem of arithmetic).
+void Deck::_oesd() {
+    oesd.clear();
+    // we need one suit only:
+    // TODO: подумать над выносом мастей в отдельную переменную...
+    // TODO: ...и созданием конструктора с любым количеством карт и мастей
+    unsigned long s = cards.size() / 4;
+    unsigned long long multiply_oesd;
 
+    // Начиная с двойки (нам нужны двухсторонние дро) идём до короля
+    // и считаем произведение value_of_cards по 4 карты в масти:
+    for (int i = 0; i < s - 3; ++i) {
+        multiply_oesd = cards[i].value_of_card * cards[i + 1].value_of_card * cards[i + 2].value_of_card *
+                        cards[i + 3].value_of_card;
+        oesd.insert(multiply_oesd);
+    }
 };
 
-//Multiply of cards of all OESD in deck, each multiply is unique (Fundamental theorem of arithmetic).
-void Deck::oesd_multiplies() {};
+// Multiply of cards of all straights in cards
+void Deck::_straights() {
+    straights.clear();
+    //we need one suit only:
+    unsigned long suitSize = cards.size() / 4 + 1; //размер масти для цикла
+    unsigned long long multiply_straights;
 
-//Multiply of cards of all straights in deck
-void Deck::straight_multiplies() {};
+//    Начиная с туза (А1345) идём до T (TJQKA)
+//    и считаем произведение value_of_cardue по 5 карт в масти:
+    for (int i = 0; i < suitSize; ++i) {
+        multiply_straights = cards[(i + suitSize) % suitSize].value_of_card * cards[(i + suitSize + 1) % suitSize].value_of_card *
+                             cards[(i + suitSize + 2) % suitSize].value_of_card * cards[(i + suitSize + 3) % suitSize].value_of_card *
+                             cards[(i + suitSize + 4) % suitSize].value_of_card;
+        //std::cout << multuplies << std::endl;
+        straights.insert(multiply_straights);
+    }
+};
 
-//Multiply of cards of all full houses (FH) in deck
-//void FH_multiplies();
+//Multiply of cards of all full houses (FH) in cards
+void Deck::_fullHouses() {
+   for (auto t : trips) {
+       for (auto c : cards) {
+           if (t/3 != c.value_of_card) {
+               fulls.insert(t * c.value_of_card * c.value_of_card);
+           }
+       }
+   }
+};
 
-//all FH with our hand cards
-//void only_hand_FH();
+// all FH with our hand cards
+void Deck::_trips() {
+    for (auto c : cards) {
+        trips.insert(c.value_of_card*3);
+    }
+};
 
 //all OESD with our hand cards
-void Deck::only_hand_oesd() {};
+// void Deck::only_hand_oesd() {};
 
 //all Strights with our hand cards
-void Deck::only_hand_straights() {};
-
+// void Deck::only_hand_straights() {};
