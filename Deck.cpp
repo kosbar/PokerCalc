@@ -1,6 +1,7 @@
 // Created by kosbar on 21.11.2019.
 
 #include <iostream>
+#include <cmath>
 #include "Deck.h"
 
 Deck::Deck() : cards {"2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
@@ -62,7 +63,7 @@ void Deck::_straights() {
 void Deck::_fullHouses() {
    for (auto t : trips) {
        for (auto c : cards) {
-           if (t/3 != c.value_of_card) {
+           if (round(pow(t, 1.0/3.0)) != c.value_of_card) {
                fulls.insert(t * c.value_of_card * c.value_of_card);
            }
        }
@@ -72,7 +73,7 @@ void Deck::_fullHouses() {
 // all FH with our hand cards
 void Deck::_trips() {
     for (auto c : cards) {
-        trips.insert(c.value_of_card*3);
+        trips.insert(c.value_of_card*c.value_of_card*c.value_of_card);
     }
 };
 
