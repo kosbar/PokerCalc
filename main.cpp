@@ -97,20 +97,6 @@ void generateSlice(std::vector<Card>& deck, std::vector<Card>& desk, int size) {
                 std::mt19937{std::random_device{}()});
 }
 
-void multiply_trips(std::vector<Card>& hand, std::set<uint64_t>& trips) {
-    trips.clear();
-    for (auto h : hand) {
-        trips.insert(3 * h.value_of_card);
-    }
-};
-
-void multiply_fulls(std::vector<Card>& hand, std::set<uint64_t>& fulls) {
-   fulls.clear();
-   for (auto h : hand) {
-        
-   }
-}
-
 int main() {
     std::vector<Card> deck52 = {
             "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
