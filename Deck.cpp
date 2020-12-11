@@ -73,7 +73,7 @@ void Deck::_fullHouses() {
 // all FH with our hand cards
 void Deck::_trips() {
     for (auto c : cards) {
-        trips.insert(c.value_of_card*c.value_of_card*c.value_of_card);
+        trips.insert(c.value_of_card * c.value_of_card * c.value_of_card);
     }
 };
 
