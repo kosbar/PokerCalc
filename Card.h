@@ -10,8 +10,8 @@ class Card {
 
 public:
     std::string str = ""; //строка для ввода и вывода значения карты
-    uint_fast8_t value_of_card = 0;
-    uint_fast8_t suit_of_card = 0;
+    unsigned long long value_of_card = 0;
+    int suit_of_card = 0;
 
     Card(char const* c);
 
