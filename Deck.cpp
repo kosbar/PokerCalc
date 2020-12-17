@@ -4,11 +4,13 @@
 #include <cmath>
 #include "Deck.h"
 
+#include <algorithm>
+
 Deck::Deck() : cards {"2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
                       "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
                       "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
                       "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac"}
-{};
+{ _fullHouses(); _oesd(); _straights(); };
 
 void Deck::pr() {
     std::cout << "cards.size(): " << cards.size() << std::endl;
@@ -61,6 +63,7 @@ void Deck::_straights() {
 
 //Multiply of cards of all full houses (FH) in cards
 void Deck::_fullHouses() {
+   _trips();
    for (auto t : trips) {
        for (auto c : cards) {
            if (round(pow(t, 1.0/3.0)) != c.value_of_card) {
@@ -77,8 +80,21 @@ void Deck::_trips() {
     }
 };
 
-//all OESD with our hand cards
-// void Deck::only_hand_oesd() {};
+//Deck& Deck::operator-(Slice& slice) {
+//    for (auto &c : slice.cards) {
+//        cards.erase(std::remove(cards.begin(), cards.end(), c), cards.end());
+//    }
+//    return *this;
+//}
 
-//all Strights with our hand cards
-// void Deck::only_hand_straights() {};
+std::set<unsigned long long> Deck::getOESD() {
+    return oesd;
+}
+
+std::set<unsigned long long> Deck::getStraights() {
+    return straights;
+}
+
+std::set<unsigned long long> Deck::getFulls() {
+    return fulls;
+};
