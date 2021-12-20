@@ -18,29 +18,21 @@ private:
 
     // Multiply of cards of all OESD in deck, each multiply is unique (Fundamental theorem of arithmetic).
     void _oesd();
-
     // Multiply of cards of all straights in deck
-    void _straights();
-
+    void _straights(std::set<unsigned long long> &multiplies, int straightSize = 5);
     // Multiply of cards of all full houses (FH) in deck
     void _fullHouses();
-
     // all FH with our hand cards
     void _trips();
 
 public:
     Deck();
-
     // Print of deck
     void pr();
-
     // Get our hand from deck
     //Deck& operator-(Slice& slice);
-
     std::set<unsigned long long> getOESD();
-
     std::set<unsigned long long> getStraights();
-
     std::set<unsigned long long> getFulls();
 };
 

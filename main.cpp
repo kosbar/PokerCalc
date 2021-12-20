@@ -8,7 +8,6 @@
 
 // Функция вычета выданных карт из колоды, чтобы не продублировать их на доске.
 void deck_minus_hand(std::vector<Card>& deck, std::vector<Card>& hand) {
-
     for (auto &c : hand) { deck.erase(std::remove(deck.begin(), deck.end(), c), deck.end()); }
     //pr(deck);
 }
@@ -28,18 +27,33 @@ void oesd_multiplies(std::vector<uint64_t>& oesd, std::vector<Card>& deck) {
     }
 }
 
-void straight_multiplies(std::vector<uint64_t>& straights, std::vector<Card>& deck) {
+void straight_multiplies(std::vector<uint64_t>& straights, std::vector<Card>& deck, int straightSize) {
     straights.clear();
     //we need one suit only:
-    unsigned long s = deck.size() / 4 + 1; //размер масти для цикла
-    uint64_t multuplies;
+    unsigned long s = deck.size() / 4;
+    std::cout << "size: " << s << std::endl;
+    uint64_t multuplies = 1;
 
 //    Начиная с туза (А1345) идём до T (TJQKA)
 //    и считаем произведение value_of_cardue по 5 карт в масти:
-    for (int i = 0; i < s; ++i) {
-        multuplies = deck[(i + s) % s].value_of_card * deck[(i + s + 1) % s].value_of_card *
-                     deck[(i + s + 2) % s].value_of_card * deck[(i + s + 3) % s].value_of_card *
-                     deck[(i + s + 4) % s].value_of_card;
+    for (int i = 0; i < (s - (straightSize - 2)); ++i) {
+        int innerStraightSize = straightSize - 1;
+        multuplies = 1;
+
+        while (innerStraightSize >= 0) {
+            std::cout << "inner: " << innerStraightSize << std::endl;
+            std::cout << i << ": " << deck[(i + s + innerStraightSize) % s].value_of_card << std::endl;
+
+            multuplies = multuplies * deck[(i + s + innerStraightSize) % s].value_of_card;
+            --innerStraightSize;
+
+            std::cout << "multiplies: " << multuplies << std::endl;
+        }
+
+        std::cout << "----------------------------------------" << std::endl;
+      //  multuplies = deck[(i + s) % s].value_of_card * deck[(i + s + 1) % s].value_of_card *
+       //              deck[(i + s + 2) % s].value_of_card * deck[(i + s + 3) % s].value_of_card *
+        //             deck[(i + s + 4) % s].value_of_card;
         //std::cout << multuplies << std::endl;
         straights.push_back(multuplies);
     }
@@ -97,37 +111,31 @@ void generateSlice(std::vector<Card>& deck, std::vector<Card>& desk, int size) {
                 std::mt19937{std::random_device{}()});
 }
 
-unsigned long long
-        getCombinations(std::vector<unsigned long long> parent,
+
+void getCombinations(std::vector<unsigned long long> parent,
                         std::vector< unsigned long long>::iterator startPosition,
                         int sizeCombination,
                         std::set<unsigned long long> combinations) {
-
+    for(int i = *startPosition; i < parent.size(); ++i) {
+        
+    }
 }
 
 int main() {
-//    std::vector<Card> deck52 = {
-//            "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
-//            "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
-//            "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
-//            "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac"
-//    };
-//
-//    std::vector<Card> hand = {"Td", "Jc"};
-//
-//    /// вектор со всеми возможными OESD в колоде.
+    std::vector<Card> hand = {"Td", "Jc"};
+
+    /// вектор со всеми возможными OESD в колоде.
 //    std::vector<uint64_t> oesd;
 //    oesd_multiplies(oesd, deck52); /// заполнилcи его
-//
-//    /// отфилтровали OESD, оставив т.е., в которых есть сданные на руки карты
+    /// отфилтровали OESD, оставив т.е., в которых есть сданные на руки карты
 //    std::vector<uint64_t> oesd_with_hand;
 //    only_hand_oesd(oesd, hand, oesd_with_hand);
 //
-//    /// вектор со всеми возможными стритами в колоде.
-//    std::vector<uint64_t> strights;
-//    straight_multiplies(strights, deck52);
-//
-//    /// отфилтровали стриты, оставив те, в которых есть сданные на руки карты
+    /// вектор со всеми возможными стритами в колоде.
+    std::vector<uint64_t> strights;
+    //straight_multiplies(strights, deck52, 4);
+
+    /// отфилтровали стриты, оставив те, в которых есть сданные на руки карты
 //    std::vector<uint64_t> strights_with_hand;
 //    only_hand_straights(strights, hand, strights_with_hand);
 //
@@ -165,8 +173,8 @@ int main() {
 //    std::cout << "Количество двух пар: " << 100*(float)two_pair/(float)iteration << "%" << std::endl;
 //    std::cout << "Количество OESD: " << 100*(float)oesd_hand/(float)iteration << "%" << std::endl;
 //
-//    Deck* deck = new Deck();int n=5;
-
+    Deck* deck = new Deck();
+    deck->pr();
 
     return 0;
 }
