@@ -34,8 +34,8 @@ void straight_multiplies(std::vector<uint64_t>& straights, std::vector<Card>& de
     std::cout << "size: " << s << std::endl;
     uint64_t multuplies = 1;
 
-//    Начиная с туза (А1345) идём до T (TJQKA)
-//    и считаем произведение value_of_cardue по 5 карт в масти:
+    //    Начиная с туза (А1345) идём до T (TJQKA)
+    //    и считаем произведение value_of_cardue по 5 карт в масти:
     for (int i = 0; i < (s - (straightSize - 2)); ++i) {
         int innerStraightSize = straightSize - 1;
         multuplies = 1;
@@ -112,67 +112,67 @@ void generateSlice(std::vector<Card>& deck, std::vector<Card>& desk, int size) {
 }
 
 
-void getCombinations(std::vector<unsigned long long> parent,
-                        std::vector< unsigned long long>::iterator startPosition,
-                        int sizeCombination,
-                        std::set<unsigned long long> combinations) {
-    for(int i = *startPosition; i < parent.size(); ++i) {
+// void getCombinations(std::vector<unsigned long long> parent,
+//                         std::vector< unsigned long long>::iterator startPosition,
+//                         int sizeCombination,
+//                         std::set<unsigned long long> combinations) {
+//     for(int i = *startPosition; i < parent.size(); ++i) {
         
-    }
-}
+//     }
+
 
 int main() {
     std::vector<Card> hand = {"Td", "Jc"};
 
-    /// вектор со всеми возможными OESD в колоде.
-//    std::vector<uint64_t> oesd;
-//    oesd_multiplies(oesd, deck52); /// заполнилcи его
+    // вектор со всеми возможными OESD в колоде.
+   //std::vector<uint64_t> oesd;
+   //oesd_multiplies(oesd, deck52); /// заполнилcи его
     /// отфилтровали OESD, оставив т.е., в которых есть сданные на руки карты
-//    std::vector<uint64_t> oesd_with_hand;
-//    only_hand_oesd(oesd, hand, oesd_with_hand);
-//
+    //    std::vector<uint64_t> oesd_with_hand;
+    //    only_hand_oesd(oesd, hand, oesd_with_hand);
+    //
     /// вектор со всеми возможными стритами в колоде.
     std::vector<uint64_t> strights;
     //straight_multiplies(strights, deck52, 4);
 
     /// отфилтровали стриты, оставив те, в которых есть сданные на руки карты
-//    std::vector<uint64_t> strights_with_hand;
-//    only_hand_straights(strights, hand, strights_with_hand);
-//
-//    std::vector<Card> flop; ///вектор с первыми тремя картами стола.
-//
-//    deck_minus_hand(deck52, hand); ///раздали карты.
-//
-//    int two_pair = 0;
-//    int one_pair = 0;
-//    int oesd_hand = 0;
-//    int iteration = 10000;
-//
-//    for (int i = 0; i < iteration; ++i) {
-//        generateSlice(deck52, flop, 3);
-//
-//        long mult_flop = multiply_value_of_cards(flop);
-//
-//        if (!(mult_flop % (hand[0].value_of_card * hand[1].value_of_card))) {
-//            ++two_pair;
-//
-//        } else if (!(mult_flop % hand[0].value_of_card) || !(mult_flop % hand[1].value_of_card)) {
-//           ++one_pair;
-//
-//        } else {
-//            for (auto c : oesd_with_hand) {
-//                if (!(mult_flop * hand[0].value_of_card * hand[1].value_of_card % c)) {
-//                    ++oesd_hand;
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//
-//    std::cout << "Количество пар: " << 100*(float)one_pair/(float)iteration << "%" << std::endl;
-//    std::cout << "Количество двух пар: " << 100*(float)two_pair/(float)iteration << "%" << std::endl;
-//    std::cout << "Количество OESD: " << 100*(float)oesd_hand/(float)iteration << "%" << std::endl;
-//
+    //    std::vector<uint64_t> strights_with_hand;
+    //    only_hand_straights(strights, hand, strights_with_hand);
+    //
+    //    std::vector<Card> flop; ///вектор с первыми тремя картами стола.
+    //
+    //    deck_minus_hand(deck52, hand); ///раздали карты.
+    //
+    //    int two_pair = 0;
+    //    int one_pair = 0;
+    //    int oesd_hand = 0;
+    //    int iteration = 10000;
+    //
+    //    for (int i = 0; i < iteration; ++i) {
+    //        generateSlice(deck52, flop, 3);
+    //
+    //        long mult_flop = multiply_value_of_cards(flop);
+    //
+    //        if (!(mult_flop % (hand[0].value_of_card * hand[1].value_of_card))) {
+    //            ++two_pair;
+    //
+    //        } else if (!(mult_flop % hand[0].value_of_card) || !(mult_flop % hand[1].value_of_card)) {
+    //           ++one_pair;
+    //
+    //        } else {
+    //            for (auto c : oesd_with_hand) {
+    //                if (!(mult_flop * hand[0].value_of_card * hand[1].value_of_card % c)) {
+    //                    ++oesd_hand;
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //    }
+    //
+    //    std::cout << "Количество пар: " << 100*(float)one_pair/(float)iteration << "%" << std::endl;
+    //    std::cout << "Количество двух пар: " << 100*(float)two_pair/(float)iteration << "%" << std::endl;
+    //    std::cout << "Количество OESD: " << 100*(float)oesd_hand/(float)iteration << "%" << std::endl;
+    //
     Deck* deck = new Deck();
     deck->pr();
 
