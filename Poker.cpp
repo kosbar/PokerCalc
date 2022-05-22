@@ -8,7 +8,7 @@
 #include "Card.h"
 
 //namespace poker {
-        // Функция вычета выданных карт из колоды, чтобы не продублировать их на доске.
+    // Функция вычета выданных карт из колоды, чтобы не продублировать их на доске.
     void deck_minus_hand(std::vector<Card>& deck, std::vector<Card>& hand) {
         for (auto &c : hand) { deck.erase(std::remove(deck.begin(), deck.end(), c), deck.end()); }
         //pr(deck);
@@ -35,30 +35,24 @@
         unsigned long s = deck.size() / 4;
         std::cout << "size: " << s << std::endl;
         uint64_t multuplies = 1;
+        int shift = s - 1;
 
     //    Начиная с туза (А1345) идём до T (TJQKA)
     //    и считаем произведение value_of_cardue по 5 карт в масти:
-        for (int i = 0; i < (s - (straightSize - 2)); ++i) {
-            int innerStraightSize = straightSize - 1;
-            multuplies = 1;
 
-            while (innerStraightSize >= 0) {
-                std::cout << "innerStraightSize: " << innerStraightSize << std::endl;
-                std::cout << "i: " << i << std::endl;
-                // std::cout << "i + s + innerStraightSize " <<  i + s + innerStraightSize << std::endl;
-                std::cout << "(i + innerStraightSize)\%s " <<  (i + innerStraightSize) % s << std::endl;
+        for(int i = 0; i <= s - straightSize + 1; ++i) {
+            // std::cout << "i: " << i << std::endl;
+            // std::cout << "(i + shift) % 13: " << (i + shift) % 13 << std::endl;
+            
+            multuplies = deck[(i + shift) % 13].value_of_card * 
+                         deck[(i + shift + 1) % 13].value_of_card *
+                         deck[(i + shift + 2) % 13].value_of_card *
+                         deck[(i + shift + 3) % 13].value_of_card *
+                         deck[(i + shift + 4) % 13].value_of_card;
+            
+            // std::cout << "multiplies: " << multuplies << std::endl;
+            // std::cout << "----------------------------------------" << std::endl;
 
-                multuplies = multuplies * deck[(i + innerStraightSize) % s].value_of_card;
-                --innerStraightSize;
-
-                //std::cout << "multiplies: " << multuplies << std::endl;
-            }
-
-            std::cout << "----------------------------------------" << std::endl;
-        //  multuplies = deck[(i + s) % s].value_of_card * deck[(i + s + 1) % s].value_of_card *
-        //              deck[(i + s + 2) % s].value_of_card * deck[(i + s + 3) % s].value_of_card *
-            //             deck[(i + s + 4) % s].value_of_card;
-            //std::cout << multuplies << std::endl;
             straights.push_back(multuplies);
         }
     }
