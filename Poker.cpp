@@ -21,8 +21,8 @@
         uint64_t oesd_in_deck;
 
         // Начиная с двойки (нам нужны двухсторонние дро) идём до короля
-        // и считаем произведение value_of_cardue по 4 карты в масти:
-        for (int i = 0; i < s - 3; ++i) {
+        // и считаем произведение value_of_card по 4 карты в масти:
+        for (int i = 0; i < s - 4; ++i) {
             oesd_in_deck = deck[i].value_of_card * deck[i + 1].value_of_card * deck[i + 2].value_of_card *
                         deck[i + 3].value_of_card;
             oesd.push_back(oesd_in_deck);
@@ -43,13 +43,15 @@
             multuplies = 1;
 
             while (innerStraightSize >= 0) {
-                std::cout << "inner: " << innerStraightSize << std::endl;
-                std::cout << i << ": " << deck[(i + s + innerStraightSize) % s].value_of_card << std::endl;
+                std::cout << "innerStraightSize: " << innerStraightSize << std::endl;
+                std::cout << "i: " << i << std::endl;
+                // std::cout << "i + s + innerStraightSize " <<  i + s + innerStraightSize << std::endl;
+                std::cout << "(i + innerStraightSize)\%s " <<  (i + innerStraightSize) % s << std::endl;
 
-                multuplies = multuplies * deck[(i + s + innerStraightSize) % s].value_of_card;
+                multuplies = multuplies * deck[(i + innerStraightSize) % s].value_of_card;
                 --innerStraightSize;
 
-                std::cout << "multiplies: " << multuplies << std::endl;
+                //std::cout << "multiplies: " << multuplies << std::endl;
             }
 
             std::cout << "----------------------------------------" << std::endl;
