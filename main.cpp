@@ -41,31 +41,41 @@ int main() {
     int two_pair = 0;
     int one_pair = 0;
     int oesd_hand = 0;
+    int strights_count = 0;
     int iteration = 10000;
 
-    // for (int i = 0; i < iteration; ++i) {
-    //     generateSlice(deck52, flop, 3);
-    //     long mult_flop = multiply_value_of_cards(flop);
+    for (int i = 0; i < iteration; ++i) {
+        generateSlice(deck52, flop, 3);
+        long long mult_flop = multiply_value_of_cards(flop);
 
-    //     if (!(mult_flop % (hand[0].value_of_card * hand[1].value_of_card))) {
-    //            ++two_pair;
+        if (!(mult_flop % (hand[0].value_of_card * hand[1].value_of_card))) {
+               ++two_pair;
 
-    //     } else if (!(mult_flop % hand[0].value_of_card) || !(mult_flop % hand[1].value_of_card)) {
-    //           ++one_pair;
+        } else if (!(mult_flop % hand[0].value_of_card) || !(mult_flop % hand[1].value_of_card)) {
+              ++one_pair;
 
-    //     } else {
-    //            for (auto c : oesd_with_hand) {
-    //                if (!(mult_flop * hand[0].value_of_card * hand[1].value_of_card % c)) {
-    //                    ++oesd_hand;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
+        } else {
+            for (auto c : oesd_with_hand) {
+                if (!(mult_flop * hand[0].value_of_card * hand[1].value_of_card % c)) {
+                    ++oesd_hand;
+                    break;
+                }
+            }
+        }
 
-//    std::cout << "Количество пар: " << 100*(float)one_pair/(float)iteration << "%" << std::endl;
-//    std::cout << "Количество двух пар: " << 100*(float)two_pair/(float)iteration << "%" << std::endl;
-//    std::cout << "Количество OESD: " << 100*(float)oesd_hand/(float)iteration << "%" << std::endl;
+        for (auto s : strights_with_hand) {
+            if (!(mult_flop * hand[0].value_of_card * hand[1].value_of_card % s)) {
+                ++strights_count;
+                break;
+            }
+        }
+
+    }
+
+   std::cout << "Количество пар: " << 100*(float)one_pair/(float)iteration << "%" << std::endl;
+   std::cout << "Количество двух пар: " << 100*(float)two_pair/(float)iteration << "%" << std::endl;
+   std::cout << "Количество OESD: " << 100*(float)oesd_hand/(float)iteration << "%" << std::endl;
+   std::cout << "Количество Стритов: " << 100*(float)strights_count/(float)iteration << "%" << std::endl;
 
    Deck* deck = new Deck();
    deck->pr();

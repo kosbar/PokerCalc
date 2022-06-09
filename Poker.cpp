@@ -109,6 +109,12 @@
                     std::mt19937{std::random_device{}()});
     }
 
+    void print(std::vector<Card>& slice) {
+        for (int i = 0; i < slice.size(); ++i) {
+            std::cout << slice[i] << " ";
+        }
+    }
+
 
     void getCombinations(std::vector<unsigned long long> parent,
                             std::vector< unsigned long long>::iterator startPosition,
